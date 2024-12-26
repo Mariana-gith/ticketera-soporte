@@ -5,6 +5,7 @@ const sendVerificationEmail = require('../config/nodemailer');
 exports.register = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
+    console.log('Received data verifyEmail register:', req.body);
     const newUser = new User({ username, email, password, role });
     await newUser.save();
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -18,6 +19,8 @@ exports.register = async (req, res) => {
 exports.verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;
+    console.log('Received data verifyEmail:', req.body);
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id);
     if (!user) {
@@ -33,11 +36,21 @@ exports.verifyEmail = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password } = req.body; // Descomentar estas líneas para definir username y password
+    console.log('Received data:', req.body);
+    console.log('Username:', username);
+    console.log('Password:', password);
+
     const user = await User.findOne({ username });
-    if (!user || !(await user.comparePassword(password))) {
+    if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
+
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
     if (!user.isVerified) {
       return res.status(401).json({ message: 'Please verify your email first' });
     }

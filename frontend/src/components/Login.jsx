@@ -1,67 +1,63 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
-const Login = ({ setAuth }) => {
-  const [formData, setFormData] = useState({ username: '', password: '' });
+const LoginForm = ({ onLogin }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/api/login', formData);
-      localStorage.setItem('token', response.data.token);
-      setAuth({ isAuthenticated: true, role: response.data.role });
-      navigate('/dashboard');
-    } catch (error) {
-      console.error(error.response.data.message); // Muestra el mensaje de error exacto en la consola
-      setError(error.response.data.message || 'Invalid credentials or unverified email');
-    }
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+      try {
+        const response = await axios.post('http://localhost:5000/api/login', { username, password });
+        onLogin(response.data.token);
+      } catch (error) {
+        setError('Invalid credentials');
+      }
+      };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <form onSubmit={handleSubmit} className="p-6 bg-white rounded shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Login</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <div className="mb-4">
-          <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+      <input type="hidden" name="remember" value="true" />
+      <div className="rounded-md shadow-sm -space-y-px">
+        <div>
+          <label htmlFor="username" className="sr-only">Username</label>
           <input
-            type="text"
-            name="username"
             id="username"
-            value={formData.username}
-            onChange={handleChange}
+            name="username"
+            type="text"
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            placeholder="Username"
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+        <div>
+          <label htmlFor="password" className="sr-only">Password</label>
           <input
-            type="password"
-            name="password"
             id="password"
-            value={formData.password}
-            onChange={handleChange}
+            name="password"
+            type="password"
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            placeholder="Password"
           />
         </div>
+      </div>
+      {error && <p className="text-red-500">{error}</p>}
+      <div>
         <button
           type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+          className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Login
+          Sign In
         </button>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 
-export default Login;
+export default LoginForm;
