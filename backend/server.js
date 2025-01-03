@@ -13,7 +13,10 @@ const app = express();
 // Conectar a la base de datos
 connectDB();
 
-app.use(cors());
+app.use(cors({
+    origin: '*', // Permite todos los orígenes (no recomendado para producción)
+  }));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

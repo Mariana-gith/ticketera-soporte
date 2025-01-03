@@ -4,28 +4,25 @@ import LoginPage from './components/pages/LoginPage.jsx';
 import RegisterPage from './components/pages/RegisterPage.jsx';
 import Dashboard from './components/pages/DashboardPage.jsx';
 import TicketPage from './components/pages/TicketPage.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
 
 const App = () => {
   const [auth, setAuth] = useState({ isAuthenticated: false, role: '' });
 
+  const handleLogin = (token, role) => {
+    setAuth({ isAuthenticated: true, role });
+    localStorage.setItem('token', token); // Opcional, si usas localStorage
+  };
+
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginPage onLogin={setAuth} />} />
+        <Route path="/" element={<Navigate to={auth.isAuthenticated ? '/dashboard' : '/login'} />} />
+        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route
-          path="/dashboard"
-          element={
-            auth.isAuthenticated ? <Dashboard /> : <Navigate to="/login" />
-          }
-        />
-        <Route
-          path="/tickets"
-          element={
-            auth.isAuthenticated ? <TicketPage /> : <Navigate to="/login" />
-          }
-        />
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="/tickets" element={<PrivateRoute auth={auth}><Dashboard /></PrivateRoute>} />
+        <Route path="/dashboard" element={<PrivateRoute auth={auth}><TicketPage /></PrivateRoute>} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

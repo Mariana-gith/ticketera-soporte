@@ -4,7 +4,7 @@ const ticketController = require('../controllers/ticketController');
 const authMiddleware = require('../middleware/authMiddleware.js');
 
 router.post('/', authMiddleware, ticketController.createTicket);
-router.get('/', authMiddleware, ticketController.getTickets);
+router.get('/api/tickets', authMiddleware, ticketController.getTickets);
 router.put('/:id', authMiddleware, ticketController.updateTicket);
 router.delete('/:id', authMiddleware, ticketController.deleteTicket);
 
