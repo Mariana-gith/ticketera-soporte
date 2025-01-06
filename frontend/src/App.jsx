@@ -17,11 +17,26 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to={auth.isAuthenticated ? '/dashboard' : '/login'} />} />
+        {/* Redirección inicial */}
+        <Route
+          path="/"
+          element={<Navigate to={auth.isAuthenticated ? '/dashboard' : '/login'} />}
+        />
+        {/* Ruta de Login */}
         <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+        {/* Ruta de Registro */}
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/tickets" element={<PrivateRoute auth={auth}><Dashboard /></PrivateRoute>} />
-        <Route path="/dashboard" element={<PrivateRoute auth={auth}><TicketPage /></PrivateRoute>} />
+        {/* Ruta protegida para el Dashboard */}
+        <Route
+          path="/dashboard"
+          element={<PrivateRoute auth={auth}><Dashboard /></PrivateRoute>}
+        />
+        {/* Ruta protegida para Tickets */}
+        <Route
+          path="/tickets"
+          element={<PrivateRoute auth={auth}><TicketPage /></PrivateRoute>}
+        />
+        {/* Redirección para rutas no válidas */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

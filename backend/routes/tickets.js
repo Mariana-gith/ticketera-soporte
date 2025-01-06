@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ticketController = require('../controllers/ticketController');
+const ticketController = require('../controllers/ticketcontroller.js');
 const authMiddleware = require('../middleware/authMiddleware.js');
 
 router.post('/', authMiddleware, ticketController.createTicket);

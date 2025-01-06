@@ -4,7 +4,7 @@ import axios from 'axios';
 const TicketList = () => {
   const [tickets, setTickets] = useState([]);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true); // Estado de carga
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -17,10 +17,10 @@ const TicketList = () => {
         });
         setTickets(response.data);
       } catch (error) {
-        setError('Error fetching tickets');
-        console.error(error); // Para más detalles sobre el error
+        setError('Failed to fetch tickets. Please try again.');
+        console.error(error);
       } finally {
-        setLoading(false); // Al finalizar la carga, cambia el estado de carga
+        setLoading(false);
       }
     };
 
@@ -28,23 +28,31 @@ const TicketList = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading tickets...</p>; // Mensaje de carga
+    return (
+      <div className="flex justify-center items-center h-full">
+        <p className="text-lg font-medium">Loading tickets...</p>
+      </div>
+    );
   }
 
   if (error) {
-    return <p className="text-red-500">{error}</p>; // Mensaje de error en rojo
+    return (
+      <div className="flex justify-center items-center h-full">
+        <p className="text-red-500 text-lg font-medium">{error}</p>
+      </div>
+    );
   }
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold">Tickets</h2>
+    <div className="p-4">
+      <h2 className="text-2xl font-bold mb-4">Tickets</h2>
       {tickets.length === 0 ? (
-        <p>No tickets available.</p> // Mensaje si no hay tickets
+        <p className="text-gray-600">No tickets available.</p>
       ) : (
         <ul className="space-y-4">
           {tickets.map((ticket) => (
-            <li key={ticket._id} className="p-4 border rounded-lg shadow-sm">
-              <p><strong>Username:</strong> {ticket.createdBy.username || 'Unknown'}</p>
+            <li key={ticket._id} className="p-4 border rounded-lg shadow-sm bg-white">
+              <p><strong>Username:</strong> {ticket.createdBy?.username || 'Unknown'}</p>
               <p><strong>Title:</strong> {ticket.title}</p>
               <p><strong>Description:</strong> {ticket.description}</p>
               <p><strong>Status:</strong> {ticket.status}</p>

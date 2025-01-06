@@ -14,9 +14,9 @@ const app = express();
 connectDB();
 
 app.use(cors({
-    origin: '*', // Permite todos los orígenes (no recomendado para producción)
-  }));
-
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
