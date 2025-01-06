@@ -9,7 +9,7 @@ const DashboardPage = ({ role }) => {
         <TicketList />
       </div>
       <div className="w-1/2 p-4">
-        {role === 'admin' && <TicketForm />}
+        {role === 'user' && <TicketForm />}
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ const TicketPage = () => {
 
   // Obtener el token del almacenamiento local
   const token = localStorage.getItem('token');
+  console.log(token)
 
   // Función para manejar el cambio en los campos del formulario
   const handleChange = (e) => {

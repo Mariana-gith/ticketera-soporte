@@ -44,7 +44,7 @@ const App = () => {
         {/* Redirección inicial */}
         <Route
           path="/"
-          element={<Navigate to={auth.isAuthenticated ? '/dashboard' : '/login'} />}
+          element={<Navigate to={auth.isAuthenticated ? '/tickets' : '/login'} />}
         />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
