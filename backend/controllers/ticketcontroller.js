@@ -1,5 +1,6 @@
 const Ticket = require('../models/Ticket');
 
+// Crear un nuevo ticket
 exports.createTicket = async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -11,17 +12,19 @@ exports.createTicket = async (req, res) => {
   }
 };
 
+// Obtener todos los tickets
 exports.getTickets = async (req, res) => {
   try {
-    const tickets = await Ticket.find({}).populate('createdBy', 'username email');
+    const tickets = await Ticket.find().populate('createdBy', 'username');
+    console.log("tickets",tickets)
     res.status(200).json(tickets);
-    console.log('Solicitud recibida en /api/tickets');
-    res.send('Esta es una prueba');
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to fetch tickets' });
   }
 };
 
+// Actualizar un ticket
 exports.updateTicket = async (req, res) => {
   try {
     const { id } = req.params;
@@ -29,7 +32,7 @@ exports.updateTicket = async (req, res) => {
     const updatedTicket = await Ticket.findByIdAndUpdate(
       id,
       { title, description, status },
-      { new: true }
+      { new: true } // Devolver el documento actualizado
     );
     if (!updatedTicket) {
       return res.status(404).json({ message: 'Ticket not found' });
@@ -40,6 +43,7 @@ exports.updateTicket = async (req, res) => {
   }
 };
 
+// Eliminar un ticket
 exports.deleteTicket = async (req, res) => {
   try {
     const { id } = req.params;

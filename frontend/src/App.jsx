@@ -37,15 +37,11 @@ const App = () => {
           element={<PrivateRoute auth={auth}><Dashboard /></PrivateRoute>}
         />
         <Route
-          path="/tickets"
-          element={<PrivateRoute auth={auth}><TicketPage /></PrivateRoute>}
-        />
-  
-        {/* Redirección inicial */}
-        <Route
           path="/"
           element={<Navigate to={auth.isAuthenticated ? '/tickets' : '/login'} />}
         />
+        <Route path="/tickets" element={<PrivateRoute auth={auth}><TicketPage /></PrivateRoute>} />
+        {/* Redirección inicial */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

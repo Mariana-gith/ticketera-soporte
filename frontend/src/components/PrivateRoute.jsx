@@ -6,7 +6,7 @@ const PrivateRoute = ({ auth, children, roleRequired }) => {
     return <Navigate to="/login" />;
   }
   if (roleRequired && auth.role !== roleRequired) {
-    return <Navigate to="/dashboard" />; // Redirección para usuarios con roles no permitidos
+    return <Navigate to="/tickets" />; // Redirección para usuarios con roles no permitidos
   }
   return children;
 };

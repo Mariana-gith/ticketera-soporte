@@ -5,6 +5,7 @@ const TicketList = () => {
   const [tickets, setTickets] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const [newTicket, setNewTicket] = useState({ title: '', description: '' });
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -17,7 +18,7 @@ const TicketList = () => {
         });
         setTickets(response.data);
       } catch (error) {
-        setError('Failed to fetch tickets. Please try again.');
+        setError('Failed to fetch tickets.');
         console.error(error);
       } finally {
         setLoading(false);
@@ -27,39 +28,72 @@ const TicketList = () => {
     fetchTickets();
   }, []);
 
+  const handleCreateTicket = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        'http://localhost:5000/api/tickets',
+        {
+          title: newTicket.title,
+          description: newTicket.description,
+          createdBy: 'ObjectId_of_an_existing_user', // Reemplaza esto dinámicamente
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTickets([...tickets, response.data]);
+      setNewTicket({ title: '', description: '' }); // Limpia el formulario
+    } catch (error) {
+      setError('Failed to create ticket.');
+      console.error(error);
+    }
+  };
+
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <p className="text-lg font-medium">Loading tickets...</p>
-      </div>
-    );
+    return <p>Loading tickets...</p>;
   }
 
   if (error) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <p className="text-red-500 text-lg font-medium">{error}</p>
-      </div>
-    );
+    return <p>{error}</p>;
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Tickets</h2>
-      {tickets.length === 0 ? (
-        <p className="text-gray-600">No tickets available.</p>
-      ) : (
-        <ul className="space-y-4">
-          {tickets.map((ticket) => (
-            <li key={ticket._id} className="p-4 border rounded-lg shadow-sm bg-white">
-              <p><strong>Username:</strong> {ticket.createdBy?.username || 'Unknown'}</p>
-              <p><strong>Title:</strong> {ticket.title}</p>
-              <p><strong>Description:</strong> {ticket.description}</p>
-              <p><strong>Status:</strong> {ticket.status}</p>
-            </li>
-          ))}
-        </ul>
-      )}
+    <div>
+      <h2>Tickets</h2>
+      <ul>
+        {tickets.map((ticket) => (
+          <li key={ticket._id}>
+            <p>Title: {ticket.title}</p>
+            <p>Description: {ticket.description}</p>
+            <p>Created By: {ticket.createdBy?.username || 'Unknown'}</p>
+          </li>
+        ))}
+      </ul>
+      <h3>Create a New Ticket</h3>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleCreateTicket();
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Title"
+          value={newTicket.title}
+          onChange={(e) => setNewTicket({ ...newTicket, title: e.target.value })}
+          required
+        />
+        <textarea
+          placeholder="Description"
+          value={newTicket.description}
+          onChange={(e) => setNewTicket({ ...newTicket, description: e.target.value })}
+          required
+        ></textarea>
+        <button type="submit">Create Ticket</button>
+      </form>
     </div>
   );
 };
