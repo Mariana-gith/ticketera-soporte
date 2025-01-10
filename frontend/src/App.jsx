@@ -32,10 +32,10 @@ const App = () => {
         <Route path="/register" element={<RegisterPage />} />
   
         {/* Rutas protegidas */}
-        <Route
+        {/* <Route
           path="/dashboard"
           element={<PrivateRoute auth={auth}><Dashboard /></PrivateRoute>}
-        />
+        /> */}
         <Route
           path="/"
           element={<Navigate to={auth.isAuthenticated ? '/tickets' : '/login'} />}
