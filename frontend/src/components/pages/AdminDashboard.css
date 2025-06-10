@@ -1,0 +1,40 @@
+.admin-dashboard {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  .dashboard-container {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .admin-summary {
+    flex: 1;
+    background: #f0f8ff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+  }
+  
+  .tickets-container {
+    flex: 2;
+  }
+  
+  .ticket-card {
+    background: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .error-message {
+    color: red;
+    margin-bottom: 10px;
+  }
+  

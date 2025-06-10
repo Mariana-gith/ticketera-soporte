@@ -1,13 +1,8 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 
-const PrivateRoute = ({ auth, children, roleRequired }) => {
-  if (!auth.isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
-  if (roleRequired && auth.role !== roleRequired) {
-    return <Navigate to="/tickets" />; // Redirección para usuarios con roles no permitidos
-  }
+const PrivateRoute = ({ auth, requiredRole, children }) => {
+  if (!auth.isAuthenticated) return <Navigate to="/login" />;
+  if (requiredRole && auth.role !== requiredRole) return <Navigate to="/" />;
   return children;
 };
 

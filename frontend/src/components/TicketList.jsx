@@ -9,8 +9,14 @@ const TicketList = () => {
 
   useEffect(() => {
     const fetchTickets = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('User is not authenticated.');
+        setLoading(false);
+        return;
+      }
+
       try {
-        const token = localStorage.getItem('token');
         const response = await axios.get('http://localhost:5000/api/tickets', {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -18,7 +24,7 @@ const TicketList = () => {
         });
         setTickets(response.data);
       } catch (error) {
-        setError('Failed to fetch tickets.');
+        setError(error.response?.data?.message || 'Failed to fetch tickets.');
         console.error(error);
       } finally {
         setLoading(false);
@@ -28,16 +34,13 @@ const TicketList = () => {
     fetchTickets();
   }, []);
 
-  const handleCreateTicket = async () => {
+  const handleCreateTicket = async (e) => {
+    e.preventDefault(); // Evita el comportamiento por defecto del formulario
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
         'http://localhost:5000/api/tickets',
-        {
-          title: newTicket.title,
-          description: newTicket.description,
-          createdBy: 'ObjectId_of_an_existing_user', // Reemplaza esto dinámicamente
-        },
+        { title: newTicket.title, description: newTicket.description },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,8 +49,9 @@ const TicketList = () => {
       );
       setTickets([...tickets, response.data]);
       setNewTicket({ title: '', description: '' }); // Limpia el formulario
+      setError(''); // Limpia cualquier error previo
     } catch (error) {
-      setError('Failed to create ticket.');
+      setError(error.response?.data?.message || 'Failed to create ticket.');
       console.error(error);
     }
   };
@@ -56,44 +60,19 @@ const TicketList = () => {
     return <p>Loading tickets...</p>;
   }
 
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
-    <div>
+    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
       <h2>Tickets</h2>
+      {/* Lista de tickets */}
       <ul>
         {tickets.map((ticket) => (
-          <li key={ticket._id}>
-            <p>Title: {ticket.title}</p>
-            <p>Description: {ticket.description}</p>
-            <p>Created By: {ticket.createdBy?.username || 'Unknown'}</p>
+          <li key={ticket._id} style={{ marginBottom: '10px' }}>
+            <p><strong>Title:</strong> {ticket.title}</p>
+            <p><strong>Description:</strong> {ticket.description}</p>
+            <p><strong>Created By:</strong> {ticket.createdBy?.username || 'Unknown'}</p>
           </li>
         ))}
       </ul>
-      <h3>Create a New Ticket</h3>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleCreateTicket();
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Title"
-          value={newTicket.title}
-          onChange={(e) => setNewTicket({ ...newTicket, title: e.target.value })}
-          required
-        />
-        <textarea
-          placeholder="Description"
-          value={newTicket.description}
-          onChange={(e) => setNewTicket({ ...newTicket, description: e.target.value })}
-          required
-        ></textarea>
-        <button type="submit">Create Ticket</button>
-      </form>
     </div>
   );
 };

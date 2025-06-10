@@ -4,7 +4,9 @@ const bodyParser = require('body-parser');
 const connectDB = require('./config/db');
 const tickets = require('./routes/tickets.js');
 const dotenv = require('dotenv');
-const authRoutes = require('./routes/auth.js')
+const authRoutes = require('./routes/auth.js');
+const userRoutes = require('./routes/users.js');
+const inventarioRoutes = require('./routes/inventario');
 
 dotenv.config();
 
@@ -20,9 +22,10 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// ✅ Rutas bien definidas
 app.use('/api/tickets', tickets);
 app.use('/api', authRoutes);
-
+app.use('/api/users', userRoutes); // <- Esta era probablemente la ruta correcta
+app.use('/api/inventario', inventarioRoutes);
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
+app.listen(PORT, () => console.log(`🔥 Server running on port ${PORT}`));

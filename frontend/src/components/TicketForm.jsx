@@ -1,54 +1,64 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const TicketsForm = ({ onAddTicket }) => {
-  const [formData, setFormData] = useState({ title: '', description: '' });
+const TicketForm = () => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
-  // Manejar cambios en los inputs
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // Manejar el envío del formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onAddTicket(formData); // Llamar a la función recibida como prop
-    setFormData({ title: '', description: '' }); // Limpiar el formulario
+    const token = localStorage.getItem('token');
+
+    try {
+      await axios.post(
+        'http://localhost:5000/api/tickets',
+        { title, description },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      toast.success('✅ Ticket creado con éxito', {
+        position: 'top-right',
+        autoClose: 3000, // Se cierra en 3 segundos
+      });
+
+      setTitle('');
+      setDescription('');
+    } catch (error) {
+      toast.error('❌ Error al crear el ticket', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-4 p-4 bg-white rounded shadow-md">
-      <h2 className="text-xl font-bold mb-4">Create New Ticket</h2>
-      <div className="mb-4">
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
+    <div className="p-4 border rounded shadow-md bg-white">
+      <h2 className="text-xl font-bold mb-4">Crear Ticket</h2>
+      <ToastContainer /> {/* Contenedor de notificaciones */}
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
-          name="title"
-          id="title"
-          value={formData.title}
-          onChange={handleChange}
+          placeholder="Título"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full p-2 border rounded"
           required
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
         />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
         <textarea
-          name="description"
-          id="description"
-          value={formData.description}
-          onChange={handleChange}
+          placeholder="Descripción"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full p-2 border rounded"
           required
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
         />
-      </div>
-      <button
-        type="submit"
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-      >
-        Create Ticket
-      </button>
-    </form>
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          Crear Ticket
+        </button>
+      </form>
+    </div>
   );
 };
 
-export default TicketsForm;
+export default TicketForm;

@@ -5,59 +5,85 @@ const sendVerificationEmail = require('../config/nodemailer');
 exports.register = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
-    console.log('Received data verifyEmail register:', req.body);
+    console.log('📥 Datos recibidos en register:', req.body);
+
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: 'Todos los campos son obligatorios' });
+    }
+
     const newUser = new User({ username, email, password, role });
     await newUser.save();
+
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
     sendVerificationEmail(email, token);
-    res.status(201).json({ message: 'User registered successfully, please check your email to verify your account' });
+
+    res.status(201).json({ message: 'Usuario registrado con éxito. Verifica tu email.' });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error('❌ Error en register:', error);
+    res.status(500).json({ message: 'Error en el servidor', error });
   }
 };
 
 exports.verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;
-    console.log('Received data verifyEmail:', req.body);
+    console.log('🔍 Token recibido en verifyEmail:', token);
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id);
+
     if (!user) {
-      return res.status(400).json({ message: 'Invalid token' });
+      return res.status(400).json({ message: 'Token inválido' });
     }
+
     user.isVerified = true;
     await user.save();
-    res.json({ message: 'Email verified successfully' });
+
+    res.json({ message: 'Email verificado con éxito' });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error('❌ Error en verifyEmail:', error);
+    res.status(500).json({ message: 'Error en el servidor', error });
   }
 };
 
 exports.login = async (req, res) => {
   try {
-    const { username, password } = req.body; // Descomentar estas líneas para definir username y password
-    console.log('Received data:', req.body);
-    console.log('Username:', username);
-    console.log('Password:', password);
+    const { username, password } = req.body;
+    console.log('📥 Datos recibidos en login:', req.body);
+
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Usuario y contraseña son obligatorios' });
+    }
 
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Credenciales inválidas' });
     }
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Credenciales inválidas' });
     }
 
     if (!user.isVerified) {
-      return res.status(401).json({ message: 'Please verify your email first' });
+      return res.status(401).json({ message: 'Verifica tu email antes de iniciar sesión' });
     }
 
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token, role: user.role });
+    // Generar token con datos adicionales
+    const token = jwt.sign(
+      { id: user._id, role: user.role, username: user.username },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    console.log('✅ Usuario autenticado:', { id: user._id, role: user.role, username: user.username });
+
+    // Enviar username al frontend para mostrarlo en la UI
+    res.json({ token, role: user.role, username: user.username });
+
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error('❌ Error en login:', error);
+    res.status(500).json({ message: 'Error en el servidor', error });
   }
 };

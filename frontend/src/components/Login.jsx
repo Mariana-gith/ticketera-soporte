@@ -110,3 +110,63 @@ const LoginForm = ({ onLogin }) => {
 };
 
 export default LoginForm;
+
+// import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+
+// const LoginPage = ({ onLogin }) => {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [selectedRole, setSelectedRole] = useState("user"); // Estado para el rol
+//   const navigate = useNavigate();
+
+//   const handleLogin = async (e) => {
+//     e.preventDefault();
+
+//     try {
+//       const response = await axios.post("http://localhost:5000/api/login", {
+//         email,
+//         password,
+//         role: selectedRole, // Enviamos el rol seleccionado
+//       });
+
+//       localStorage.setItem("token", response.data.token);
+//       localStorage.setItem("role", response.data.role);
+//       onLogin(response.data.token, response.data.role);
+
+//       // Redirigir según el rol seleccionado
+//       if (response.data.role === "admin") {
+//         navigate("/dashboard"); // Vista de técnico
+//       } else {
+//         navigate("/user-dashboard"); // Vista de usuario normal
+//       }
+//     } catch (error) {
+//       console.error("Error al iniciar sesión:", error);
+//       alert("Credenciales incorrectas");
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <h2>Iniciar Sesión</h2>
+//       <form onSubmit={handleLogin}>
+//         <label>Email:</label>
+//         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+
+//         <label>Contraseña:</label>
+//         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+
+//         <label>Ingresar como:</label>
+//         <select value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}>
+//           <option value="user">Usuario</option>
+//           <option value="admin">Técnico</option>
+//         </select>
+
+//         <button type="submit">Iniciar Sesión</button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default LoginPage;

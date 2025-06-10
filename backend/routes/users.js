@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController');
+const { getUserProfile } = require('../controllers/userController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-router.post('/register', userController.register);
-router.get('/verify/:token', userController.verifyEmail);
-router.post('/login', userController.login);
+router.get('/me', authMiddleware, getUserProfile); // Ruta protegida
 
 module.exports = router;

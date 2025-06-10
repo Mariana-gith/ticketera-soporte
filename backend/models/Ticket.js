@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
-const ticketSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-  },
+const TicketSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -13,22 +9,28 @@ const ticketSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  createdBy: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User'
+  },
   status: {
     type: String,
-    enum: ['open', 'closed', 'in progress'],
+    enum: ['open', 'in_progress', 'closed'],
     default: 'open',
   },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId, // Referencia al modelo User
-    ref: 'User',
+  workMode: {
+    type: String,
+    enum: ['home', 'presencial'],
     required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  teamViewerID: {
+    type: String,
+    required: false,
   },
-});
+  teamViewerPassword: {
+    type: String,
+    required: false,
+  },
+}, { timestamps: true });
 
-const Ticket = mongoose.model('Ticket', ticketSchema);
-
-module.exports = Ticket;
+module.exports = mongoose.model('Ticket', TicketSchema);
