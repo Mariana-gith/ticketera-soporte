@@ -35,6 +35,13 @@ app.use('/api/inventario', inventarioRoutes);
 
 // Ruta de prueba
 app.get('/healthz', (req, res) => res.send('OK'));
-
 const PORT = process.env.PORT || 5000;
+
+app.get('/', (req, res) => {
+  res.send('Backend funcionando 👌');
+});
+
+app.get('/healthz', (req, res) => {
+  res.send('OK');
+});
 app.listen(PORT, () => console.log(`🔥 Server running on port ${PORT}`));
