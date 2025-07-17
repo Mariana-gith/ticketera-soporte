@@ -33,20 +33,7 @@ app.use('/api', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/inventario', inventarioRoutes);
 
-// Ruta de prueba
-app.get('/healthz', (req, res) => res.send('OK'));
-const PORT = process.env.PORT || 5000;
 
-app.get('/', (req, res) => {
-  res.send('Backend funcionando 👌');
-});
-
-app.get('/healthz', (req, res) => {
-  res.send('OK');
-});
-app.listen(PORT, () => console.log(`🔥 Server running on port ${PORT}`));
-
-const path = require('path');
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/dist'))); // o ../client/build
