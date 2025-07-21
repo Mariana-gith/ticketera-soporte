@@ -31,7 +31,7 @@ const UserDashboard = () => {
   const fetchTickets = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/tickets', {
+      const response = await axios.get('https://ticketera-soporte.onrender.com/tickets', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setTickets(response.data);
@@ -44,7 +44,7 @@ const UserDashboard = () => {
   const fetchUser = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/users/me', {
+      const response = await axios.get('https://ticketera-soporte.onrender.com/users/me', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(response.data);
@@ -66,7 +66,7 @@ const UserDashboard = () => {
   const handleCreateTicket = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/tickets', {
+      const response = await axios.post('https://ticketera-soporte.onrender.com/tickets', {
         ...newTicket,
         workMode: modoSoporte, // 👈 nuevo campo
       }, {

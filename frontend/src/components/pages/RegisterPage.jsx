@@ -12,7 +12,7 @@ const RegisterPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/register", {
+      await axios.post("https://ticketera-soporte.onrender.com/register", {
         username,
         email,
         password,

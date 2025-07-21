@@ -18,7 +18,7 @@ const RegisterPage = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/register', formData);
+      const response = await axios.post('https://ticketera-soporte.onrender.com/register', formData);
       console.log('✅ Registro exitoso:', response.data);
       navigate('/login');
     } catch (err) {
