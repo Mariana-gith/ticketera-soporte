@@ -13,7 +13,7 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://ticketera-soporte.onrender.com/register', formData);
+      const response = await axios.post('/api/register', formData);
       setMessage(response.data.message);
     } catch (error) {
       setError('Error during registration');

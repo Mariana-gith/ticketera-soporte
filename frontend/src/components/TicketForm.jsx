@@ -13,7 +13,7 @@ const TicketForm = () => {
 
     try {
       await axios.post(
-        'https://ticketera-soporte.onrender.com/tickets',
+        '/api/tickets',
         { title, description },
         { headers: { Authorization: `Bearer ${token}` } }
       );

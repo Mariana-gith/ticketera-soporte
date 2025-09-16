@@ -17,7 +17,7 @@ const TicketList = () => {
       }
 
       try {
-        const response = await axios.get('https://ticketera-soporte.onrender.com/tickets', {
+        const response = await axios.get('/api/tickets', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -39,7 +39,7 @@ const TicketList = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'https://ticketera-soporte.onrender.com/tickets',
+        '/api/tickets',
         { title: newTicket.title, description: newTicket.description },
         {
           headers: {

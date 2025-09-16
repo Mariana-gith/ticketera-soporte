@@ -19,7 +19,7 @@ const TicketPage = () => {
     const fetchTickets = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get('https://ticketera-soporte.onrender.com/tickets', {
+        const response = await axios.get('/api/tickets', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTickets(response.data);
@@ -44,7 +44,7 @@ const TicketPage = () => {
           return;
         }
     
-        const response = await axios.get('https://ticketera-soporte.onrender.com/users/me', {
+        const response = await axios.get('/api/users', {
           headers: { Authorization: `Bearer ${token}` },
         });
     

@@ -20,7 +20,7 @@ const AdminDashboard = () => {
   const fetchTickets = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://ticketera-soporte.onrender.com/tickets/', {
+      const response = await axios.get('/api/tickets', {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -46,7 +46,7 @@ const AdminDashboard = () => {
     try {
       const token = localStorage.getItem('token');
       console.log("Token enviado:", token);
-      const response = await axios.get('https://ticketera-soporte.onrender.com/users/me', {
+      const response = await axios.get('/api/users', {   // 👈 cambiado
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("📌 Info del técnico recibida:", response.data);
@@ -56,12 +56,13 @@ const AdminDashboard = () => {
       setError('No se pudieron cargar los datos del técnico.');
     }
   };
+  
 
   const handleStatusChange = async (ticketId, nuevoEstado) => {
     console.log(`🔄 Enviando actualización para ticket ${ticketId} con status: ${nuevoEstado}`);
 
     try {
-      const response = await fetch(`https://ticketera-soporte.onrender.com/tickets/${ticketId}/status`, {
+      const response = await fetch(`/api/tickets/${ticketId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -22,7 +22,7 @@ const App = () => {
       }
 
       try {
-        await axios.get('https://ticketera-soporte.onrender.com/user/me', {
+        await axios.get('/api/users', {   // 👈 cambiado
           headers: { Authorization: `Bearer ${token}` },
         });
 

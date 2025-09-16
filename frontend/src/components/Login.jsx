@@ -29,7 +29,7 @@ const LoginForm = ({ onLogin }) => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.post('https://ticketera-soporte.onrender.com/login', { username, password });
+      const response = await axios.post('http://localhost:5000/api/login', { username, password });
       const { token, role } = response.data;
       onLogin(token, role);
       navigate('/dashboard'); // Redirige al dashboard después de login exitoso

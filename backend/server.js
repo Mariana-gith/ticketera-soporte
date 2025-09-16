@@ -13,16 +13,16 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.use(cors())
 
-// Configurar CORS para local y producción
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://ticketera-soporte-git-test-mariana-giths-projects.vercel.app']
+// 🔑 permitir llamadas desde tu frontend (localhost:5173)
+// app.use(cors({
+//   origin: 'http://localhost:5173',
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   credentials: true
+// }));
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
-}));
+app.use(express.json());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,10 +35,16 @@ app.use('/api/inventario', inventarioRoutes);
 
 
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/dist'))); // o ../client/build
+// // if (process.env.NODE_ENV === 'production') {
+// //   app.use(express.static(path.join(__dirname, '../client/dist'))); // o ../client/build
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
-  });
-}
+// //   app.get('*', (req, res) => {
+// //     res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+// //   });
+// // }
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
+});

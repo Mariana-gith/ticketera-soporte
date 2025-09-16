@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const User = require('./User');
+
 
 const TicketSchema = new mongoose.Schema({
   title: {
