@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     username: '',
@@ -18,7 +20,8 @@ const RegisterPage = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('/api/register', formData);
+      // const response = await axios.post('/api/register', formData);
+      const response = await axios.post(`${API_URL}/register`, formData);
       console.log('✅ Registro exitoso:', response.data);
       navigate('/login');
     } catch (err) {

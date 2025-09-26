@@ -4,6 +4,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './AdminDashboard.css';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 const UserDashboard = () => {
   const [tickets, setTickets] = useState([]);
   const [user, setUser] = useState(null);
@@ -31,7 +34,7 @@ const UserDashboard = () => {
   const fetchTickets = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/api/tickets', {
+      const response = await axios.get(`${API_URL} /tickets`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setTickets(response.data);

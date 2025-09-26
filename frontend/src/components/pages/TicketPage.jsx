@@ -4,6 +4,9 @@ import TicketForm from '../TicketForm.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 const TicketPage = () => {
   const [tickets, setTickets] = useState([]);
   const [showAll, setShowAll] = useState(false);
@@ -19,7 +22,7 @@ const TicketPage = () => {
     const fetchTickets = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get('/api/tickets', {
+        const response = await axios.get(`${API_URL}/tickets`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTickets(response.data);
@@ -44,7 +47,7 @@ const TicketPage = () => {
           return;
         }
     
-        const response = await axios.get('/api/users', {
+        const response = await axios.get(`${API_URL}/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
     

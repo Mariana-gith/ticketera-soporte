@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importamos useNavigate
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const LoginForm = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -29,7 +31,7 @@ const LoginForm = ({ onLogin }) => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.post('http://localhost:5000/api/login', { username, password });
+      const response = await axios.post(`${API_URL}/login`, { username, password });
       const { token, role } = response.data;
       onLogin(token, role);
       navigate('/dashboard'); // Redirige al dashboard después de login exitoso

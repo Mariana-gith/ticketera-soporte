@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 const TicketList = () => {
   const [tickets, setTickets] = useState([]);
   const [error, setError] = useState('');
@@ -17,7 +20,7 @@ const TicketList = () => {
       }
 
       try {
-        const response = await axios.get('/api/tickets', {
+        const response = await axios.get(`${API_URL}/tickets`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const AdminDashboard = () => {
   const [tickets, setTickets] = useState([]);
@@ -20,7 +21,7 @@ const AdminDashboard = () => {
   const fetchTickets = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/api/tickets', {
+      const response = await axios.get(`${API_URL}/tickets`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -46,7 +47,7 @@ const AdminDashboard = () => {
     try {
       const token = localStorage.getItem('token');
       console.log("Token enviado:", token);
-      const response = await axios.get('/api/users', {   // 👈 cambiado
+      const response = await axios.get(`${API_URL}/users`, {   // 👈 cambiado
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("📌 Info del técnico recibida:", response.data);
