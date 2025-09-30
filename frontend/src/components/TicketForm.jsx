@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api/axios';
+
 
 const TicketForm = () => {
   const [title, setTitle] = useState('');
@@ -12,8 +14,8 @@ const TicketForm = () => {
     const token = localStorage.getItem('token');
 
     try {
-      await axios.post(
-        '/api/tickets',
+      await api.post(
+        '/tickets',
         { title, description },
         { headers: { Authorization: `Bearer ${token}` } }
       );

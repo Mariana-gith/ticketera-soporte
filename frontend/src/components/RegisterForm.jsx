@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
+
+
 
 
 const RegisterForm = () => {
@@ -16,7 +17,7 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_URL} /register`, formData);
+      const response = await api.post(`/register`, formData);
       setMessage(response.data.message);
     } catch (error) {
       setError('Error during registration');

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from '../api/axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
@@ -14,7 +13,7 @@ const RegisterPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_URL}/register`, {
+      await api.post(`/register`, {
         username,
         email,
         password,

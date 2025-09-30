@@ -7,6 +7,8 @@ import UserDashboard from './components/pages/UserDashboard.jsx';
 import AdminDashboard from './components/pages/AdminDashboard.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import Header from './components/Header.jsx';
+import api from '../api/axios'
+
 
 const App = () => {
   const [auth, setAuth] = useState({ isAuthenticated: null, role: '' });
@@ -22,7 +24,7 @@ const App = () => {
       }
 
       try {
-        await axios.get('/api/users', {   // 👈 cambiado
+        await api.get('/users', {   // 👈 cambiado
           headers: { Authorization: `Bearer ${token}` },
         });
 
