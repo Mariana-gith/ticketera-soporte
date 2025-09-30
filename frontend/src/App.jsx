@@ -53,27 +53,28 @@ const App = () => {
   if (auth.isAuthenticated === null) return <p>Verificando sesión...</p>;
 
   return (
-    <Router>
-      <Header auth={auth} onLogout={handleLogout} />
-      <Routes>
-        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-        <Route path="/register" element={<RegisterPage />} />
+<Router basename="/tiketera">
+  <Header auth={auth} onLogout={handleLogout} />
+  <Routes>
+    <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+    <Route path="/register" element={<RegisterPage />} />
 
-        <Route path="/user-dashboard" element={
-          <PrivateRoute auth={auth} requiredRole="user">
-            <UserDashboard />
-          </PrivateRoute>
-        } />
+    <Route path="/user-dashboard" element={
+      <PrivateRoute auth={auth} requiredRole="user">
+        <UserDashboard />
+      </PrivateRoute>
+    } />
 
-        <Route path="/admin-dashboard" element={
-          <PrivateRoute auth={auth} requiredRole="admin">
-            <AdminDashboard />
-          </PrivateRoute>
-        } />
+    <Route path="/admin-dashboard" element={
+      <PrivateRoute auth={auth} requiredRole="admin">
+        <AdminDashboard />
+      </PrivateRoute>
+    } />
 
-        <Route path="*" element={<Navigate to={auth.role === 'admin' ? "/admin-dashboard" : "/user-dashboard"} />} />
-      </Routes>
-    </Router>
+    <Route path="*" element={<Navigate to={auth.role === 'admin' ? "/admin-dashboard" : "/user-dashboard"} />} />
+  </Routes>
+</Router>
+
   );
 };
 
