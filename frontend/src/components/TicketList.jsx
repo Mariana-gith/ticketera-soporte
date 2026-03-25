@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
 
 
 const TicketList = () => {
@@ -20,7 +19,7 @@ const TicketList = () => {
       }
 
       try {
-        const response = await axios.get(`${API_URL}/tickets`, {
+        const response = await api.get(`/tickets`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

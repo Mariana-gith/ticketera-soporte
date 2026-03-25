@@ -7,7 +7,7 @@ import UserDashboard from './components/pages/UserDashboard.jsx';
 import AdminDashboard from './components/pages/AdminDashboard.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import Header from './components/Header.jsx';
-import api from '../api/axios'
+import api from '../src/api/axios.js'
 
 
 const App = () => {

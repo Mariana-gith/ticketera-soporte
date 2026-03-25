@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importamos useNavigate
 import axios from 'axios';
 
-import api from '../api/axios';
+import api from '../../src/api/axios.js';
 
 const LoginForm = ({ onLogin }) => {
   const [username, setUsername] = useState('');
